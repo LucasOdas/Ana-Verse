@@ -33,6 +33,38 @@
                     <div class="pocao pocao-misterio" onclick="mudarPocao('misterio')" title="Poção do Mistério">⚗️</div>
                 </div>
             </div>
+            <div class="entertainment-section materializar">
+                <div class="carousel-container">
+                    <button class="carousel-btn left" onclick="prevCompliment()">◀️</button>
+                    <div class="carousel-compliment" id="carousel-compliment">Ana, você é brilhante! ✨</div>
+                    <button class="carousel-btn right" onclick="nextCompliment()">▶️</button>
+                </div>
+                <div class="emoji-animation" id="emoji-animation">💖</div>
+                <button class="btn btn-darkmode" onclick="toggleDarkMode()">🌓 Modo Escuro</button>
+                <div class="minigame-card">
+                    <h4>Mini-jogo: Toque no Coração!</h4>
+                    <div id="minigame-heart" class="minigame-heart" onclick="heartClick()">❤️</div>
+                    <div>Pontos: <span id="minigame-score">0</span></div>
+                </div>
+                <div class="buttons-grid">
+                    <button class="btn btn-message" onclick="showMessage()">
+                        💌 Mensagem Especial
+                    </button>
+                    <button class="btn btn-surprise" onclick="generateSurprise()">
+                        🎁 Gerador de Surpresa
+                    </button>
+                    <button class="btn btn-galaxy" onclick="toggleGalaxy()">
+                        🌌 Ativar Galáxia
+                    </button>
+                    <button class="btn btn-confetti" onclick="launchConfetti()">
+                        🎉 Festa Surpresa!
+                    </button>
+                </div>
+                <div id="message-box" class="message-box hidden">
+                    <p id="message-content"></p>
+                    <button onclick="closeMessage()" class="btn-close">✕</button>
+                </div>
+            </div>
             <div class="card card-stats aura-magica materializar">
                 <h3>📊 Magia do Grimório</h3>
                 <div class="stat-item">
