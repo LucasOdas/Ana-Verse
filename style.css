@@ -410,6 +410,35 @@ body {
   box-shadow: 0 0 12px 2px #fffbe7cc;
 }
 
+/* Feedback visual para mensagens das poções e do oráculo */
+.pocao-msg {
+  margin-top: 0.7em;
+  font-size: 1.1rem;
+  color: var(--color-gold);
+  background: rgba(40,40,60,0.18);
+  border-radius: 0.7em;
+  padding: 0.5em 1em;
+  box-shadow: 0 2px 8px #ffe06633;
+  text-align: center;
+  animation: fadeIn 0.7s;
+}
+.pocao-msg-anim {
+  animation: popPocao 1.2s cubic-bezier(.68,-0.55,.27,1.55);
+}
+@keyframes popPocao {
+  0% { transform: scale(0.8); opacity: 0.2; }
+  30% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.oraculo-anim {
+  animation: oraculoPop 1.2s cubic-bezier(.68,-0.55,.27,1.55);
+}
+@keyframes oraculoPop {
+  0% { transform: scale(0.8) rotate(-8deg); opacity: 0.2; }
+  30% { transform: scale(1.15) rotate(8deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
 /* Acessibilidade: foco visível para elementos interativos */
 .btn:focus-visible, .carousel-btn:focus-visible, .minigame-heart:focus-visible, .pocao:focus-visible, .btn-close:focus-visible {
   outline: 3px solid var(--color-gold);

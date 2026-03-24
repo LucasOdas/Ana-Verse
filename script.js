@@ -224,6 +224,65 @@ function updateStats() {
     document.getElementById('moments-count').textContent = momentsCount;
 }
 
+// --- ORÁCULO: Pedra Rúnica ---
+function oraculoMensagem() {
+    const mensagens = [
+        'A magia está em você! ✨',
+        'Confie na sua intuição, Maga Branca.',
+        'Hoje é um dia de sorte e luz!',
+        'O universo sorri para quem espalha alegria.',
+        'Grandes feitiços vêm de grandes corações.',
+        'A resposta está no seu sorriso! 😊',
+        'Acredite: você é a luz do seu próprio caminho.',
+        'A magia acontece quando você acredita!',
+        'O oráculo vê um futuro brilhante para você!',
+        'Siga seu coração, ele conhece o caminho.'
+    ];
+    const msg = mensagens[Math.floor(Math.random() * mensagens.length)];
+    const div = document.getElementById('oraculo-mensagem');
+    div.textContent = msg;
+    div.classList.add('oraculo-anim');
+    setTimeout(() => div.classList.remove('oraculo-anim'), 1200);
+    smilesCount++;
+    updateStats();
+}
+function setupOraculo() {
+    const pedra = document.getElementById('oraculo-runa');
+    if (!pedra) return;
+    pedra.addEventListener('click', oraculoMensagem);
+    pedra.addEventListener('touchstart', oraculoMensagem, { passive: true });
+    pedra.addEventListener('keypress', e => {
+        if (e.key === 'Enter' || e.key === ' ') oraculoMensagem();
+    });
+}
+
+// --- POÇÕES DE HUMOR ---
+function mudarPocao(tipo) {
+    const grid = document.querySelector('.pocoes-grid');
+    let msg = '';
+    if (tipo === 'calmaria') msg = 'Você sente uma onda de calmaria... Respire fundo! 🧘‍♀️';
+    if (tipo === 'alegria') msg = 'Alegria pura! Sorria e contagie o mundo! 😁';
+    if (tipo === 'misterio') msg = 'Mistérios no ar... O que será que vem aí? 🕵️‍♀️';
+    if (!document.getElementById('pocao-msg')) {
+        const el = document.createElement('div');
+        el.id = 'pocao-msg';
+        el.className = 'pocao-msg';
+        grid.parentNode.appendChild(el);
+    }
+    const el = document.getElementById('pocao-msg');
+    el.textContent = msg;
+    el.classList.add('pocao-msg-anim');
+    setTimeout(() => el.classList.remove('pocao-msg-anim'), 1200);
+    smilesCount++;
+    updateStats();
+}
+function setupPocoes() {
+    document.querySelectorAll('.pocao').forEach(btn => {
+        btn.addEventListener('click', e => mudarPocao(btn.classList.contains('pocao-calmaria') ? 'calmaria' : btn.classList.contains('pocao-alegria') ? 'alegria' : 'misterio'));
+        btn.addEventListener('touchstart', e => mudarPocao(btn.classList.contains('pocao-calmaria') ? 'calmaria' : btn.classList.contains('pocao-alegria') ? 'alegria' : 'misterio'), { passive: true });
+    });
+}
+
 // --- INICIALIZAÇÃO DOS BOTÕES ---
 document.addEventListener('DOMContentLoaded', () => {
     createStars();
@@ -234,6 +293,8 @@ document.addEventListener('DOMContentLoaded', () => {
     addTouchAndClick('.btn-surprise', generateSurprise);
     addTouchAndClick('.btn-galaxy', toggleGalaxy);
     addTouchAndClick('.btn-confetti', launchConfetti);
+    setupOraculo();
+    setupPocoes();
     // Easter egg: tecla secreta
     document.addEventListener('keydown', (e) => {
         if (e.key.toLowerCase() === 'a' && e.ctrlKey && e.shiftKey) {
