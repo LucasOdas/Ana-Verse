@@ -156,6 +156,12 @@ body {
     transform: translateY(-1px);
 }
 
+.btn-pressed {
+    filter: brightness(0.85) saturate(1.2);
+    transform: scale(0.97);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+}
+
 .btn-message {
     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
 }
@@ -265,6 +271,14 @@ body {
     pointer-events: none;
 }
 
+.animated-alert {
+    /* O resto do estilo é injetado via JS para garantir prioridade */
+}
+
+.floating-shape {
+    pointer-events: none;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .title {
@@ -277,5 +291,82 @@ body {
     
     .card {
         padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 10px 2vw;
+    }
+    .header {
+        margin-bottom: 25px;
+    }
+    .title {
+        font-size: 1.5em;
+        padding: 0 2vw;
+        word-break: break-word;
+    }
+    .subtitle {
+        font-size: 1em;
+        padding: 0 2vw;
+    }
+    .card {
+        padding: 10px 6px;
+        border-radius: 12px;
+        margin-bottom: 15px;
+    }
+    .card h2 {
+        font-size: 1.2em;
+    }
+    .card p {
+        font-size: 1em;
+    }
+    .buttons-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .btn {
+        padding: 12px 0;
+        font-size: 1em;
+        border-radius: 10px;
+    }
+    .message-box {
+        padding: 18px 6px;
+        font-size: 1em;
+        border-radius: 12px;
+    }
+    .btn-close {
+        width: 32px;
+        height: 32px;
+        font-size: 1.1em;
+        top: 8px;
+        right: 8px;
+    }
+    .footer {
+        margin-top: 20px;
+        padding-top: 10px;
+        font-size: 0.8em;
+    }
+    .stat-item {
+        font-size: 0.95em;
+        padding: 6px 0;
+    }
+    .animated-alert {
+        font-size: 1em;
+        padding: 12px 10px;
+        border-radius: 12px;
+    }
+}
+
+@media (max-width: 375px) {
+    .title {
+        font-size: 1.1em;
+    }
+    .btn {
+        font-size: 0.95em;
+        padding: 10px 0;
+    }
+    .message-box {
+        font-size: 0.95em;
     }
 }

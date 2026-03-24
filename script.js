@@ -1,3 +1,23 @@
+// Sons para interações
+let clickSound, confettiSound;
+function loadSounds() {
+    clickSound = new Audio('https://cdn.pixabay.com/audio/2022/07/26/audio_124bfa4b7b.mp3'); // clique
+    confettiSound = new Audio('https://cdn.pixabay.com/audio/2022/07/26/audio_124bfa4b7b.mp3'); // pode trocar por som de festa
+}
+
+function playClick() {
+    if (clickSound) {
+        clickSound.currentTime = 0;
+        clickSound.play();
+    }
+}
+function playConfetti() {
+    if (confettiSound) {
+        confettiSound.currentTime = 0;
+        confettiSound.play();
+    }
+}
+
 // Mensagens especiais para a Ana
 const specialMessages = [
     "Ana, você é incrível! 🌟",
@@ -8,6 +28,8 @@ const specialMessages = [
     "Bem-vinda ao seu mundo mágico! 🎪",
     "Você é a razão deste projeto existir! 💖",
     "Aproveite e brinque bastante! 🎮",
+    "Você é a estrela principal deste universo! ⭐",
+    "Sorria, Ana! O universo sorri com você! 😊"
 ];
 
 // Contadores
@@ -17,6 +39,7 @@ let momentsCount = 0;
 // Criar estrelas de fundo
 function createStars() {
     const starsContainer = document.querySelector('.stars');
+    starsContainer.innerHTML = '';
     for (let i = 0; i < 100; i++) {
         const star = document.createElement('div');
         star.className = 'star';
@@ -27,26 +50,29 @@ function createStars() {
     }
 }
 
-// Mostrar mensagem especial
+// Mostrar mensagem especial com animação
 function showMessage() {
+    playClick();
     const messageBox = document.getElementById('message-box');
     const messageContent = document.getElementById('message-content');
     const randomMessage = specialMessages[Math.floor(Math.random() * specialMessages.length)];
-    
     messageContent.textContent = randomMessage;
     messageBox.classList.remove('hidden');
-    
+    messageBox.classList.add('pop-anim');
+    setTimeout(() => messageBox.classList.remove('pop-anim'), 600);
     smilesCount++;
     updateStats();
 }
 
 // Fechar mensagem
 function closeMessage() {
+    playClick();
     document.getElementById('message-box').classList.add('hidden');
 }
 
-// Gerar surpresa aleatória
+// Gerar surpresa aleatória com efeito
 function generateSurprise() {
+    playClick();
     const surprises = [
         "🎬 PLOT TWIST: Ana é a protagonista deste universo!",
         "🎯 MISSÃO: Relaxar, aproveitar e se divertir!",
@@ -56,37 +82,54 @@ function generateSurprise() {
         "🔮 REVELAÇÃO: Este projeto foi feito para você!",
         "🎯 EASTER EGG: Parabéns por explorar o site!",
         "🌈 PODER ATIVADO: Alegria infinita desbloqueada!",
+        "🦄 Magia desbloqueada! Toque nas estrelas!"
     ];
-    
     const surprise = surprises[Math.floor(Math.random() * surprises.length)];
-    alert(surprise);
-    
+    showAnimatedAlert(surprise);
     momentsCount++;
     updateStats();
+}
+
+// Alerta animado para surpresas
+function showAnimatedAlert(text) {
+    let alertDiv = document.createElement('div');
+    alertDiv.className = 'animated-alert';
+    alertDiv.textContent = text;
+    document.body.appendChild(alertDiv);
+    setTimeout(() => {
+        alertDiv.classList.add('show');
+        setTimeout(() => {
+            alertDiv.classList.remove('show');
+            setTimeout(() => alertDiv.remove(), 500);
+        }, 2200);
+    }, 50);
 }
 
 // Ativar/desativar galáxia (efeito visual)
 let galaxyActive = false;
 function toggleGalaxy() {
+    playClick();
     galaxyActive = !galaxyActive;
     const body = document.body;
-    
     if (galaxyActive) {
         body.style.background = 'radial-gradient(circle, #1a0033 0%, #330066 50%, #000000 100%)';
         createFloatingShapes();
+        showAnimatedAlert('🌌 Galáxia ativada!');
     } else {
         body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+        removeFloatingShapes();
+        showAnimatedAlert('Galáxia desativada!');
     }
-    
     momentsCount++;
     updateStats();
 }
 
 // Criar formas flutuantes
 function createFloatingShapes() {
-    const container = document.querySelector('.container');
+    removeFloatingShapes();
     for (let i = 0; i < 5; i++) {
         const shape = document.createElement('div');
+        shape.className = 'floating-shape';
         shape.style.position = 'fixed';
         shape.style.width = Math.random() * 100 + 50 + 'px';
         shape.style.height = shape.style.width;
@@ -94,12 +137,16 @@ function createFloatingShapes() {
         shape.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
         shape.style.left = Math.random() * 100 + '%';
         shape.style.top = Math.random() * 100 + '%';
-        shape.style.opacity = '0.1';
+        shape.style.opacity = '0.13';
         shape.style.pointerEvents = 'none';
         shape.style.animation = `float ${Math.random() * 10 + 15}s infinite`;
         shape.style.zIndex = '1';
+        shape.classList.add('galaxy-shape');
         document.body.appendChild(shape);
     }
+}
+function removeFloatingShapes() {
+    document.querySelectorAll('.galaxy-shape').forEach(e => e.remove());
 }
 
 // Animação de flutuação
@@ -110,29 +157,49 @@ style.textContent = `
         33% { transform: translate(100px, -100px) rotate(120deg); }
         66% { transform: translate(-100px, 100px) rotate(240deg); }
     }
+    .animated-alert {
+        position: fixed;
+        left: 50%;
+        top: 20%;
+        transform: translate(-50%, -50%) scale(0.8);
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: #fff;
+        padding: 22px 30px;
+        border-radius: 18px;
+        font-size: 1.2em;
+        font-weight: bold;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+        opacity: 0;
+        z-index: 9999;
+        transition: all 0.5s cubic-bezier(.68,-0.55,.27,1.55);
+        pointer-events: none;
+    }
+    .animated-alert.show {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
 `;
 document.head.appendChild(style);
 
-// Lançar confete (festa)
+// Lançar confete (festa) com efeito aprimorado
 function launchConfetti() {
+    playConfetti();
     const container = document.getElementById('confetti-container');
     const colors = ['#FFD700', '#FF69B4', '#00CED1', '#FFB6C1', '#FFA500', '#00FF00'];
-    
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 60; i++) {
         const confetti = document.createElement('div');
         confetti.className = 'confetti';
         confetti.style.left = Math.random() * 100 + '%';
         confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        confetti.style.width = Math.random() * 10 + 5 + 'px';
+        confetti.style.width = Math.random() * 12 + 6 + 'px';
         confetti.style.height = confetti.style.width;
         confetti.style.borderRadius = '50%';
-        confetti.style.animation = `fall ${Math.random() * 3 + 2}s ease-in forwards`;
-        
+        confetti.style.animation = `fall ${Math.random() * 2.5 + 2}s ease-in forwards`;
+        confetti.style.opacity = 0.85;
         container.appendChild(confetti);
-        
-        setTimeout(() => confetti.remove(), (Math.random() * 3 + 2) * 1000);
+        setTimeout(() => confetti.remove(), (Math.random() * 2.5 + 2) * 1000);
     }
-    
+    showAnimatedAlert('🎉 Festa Surpresa!');
     momentsCount++;
     updateStats();
 }
@@ -158,12 +225,16 @@ function updateStats() {
 // Inicializar ao carregar
 document.addEventListener('DOMContentLoaded', () => {
     createStars();
-    
+    loadSounds();
     // Easter egg: tecla secreta
     document.addEventListener('keydown', (e) => {
         if (e.key.toLowerCase() === 'a' && e.ctrlKey && e.shiftKey) {
-            alert('🎊 Parabéns Ana! Você encontrou o code secreto! Você é incrível! 🎊');
+            showAnimatedAlert('🎊 Parabéns Ana! Você encontrou o code secreto! Você é incrível! 🎊');
         }
+    });
+    // Toque em estrelas para mobile
+    document.querySelector('.stars').addEventListener('touchstart', () => {
+        showAnimatedAlert('✨ Você tocou nas estrelas!');
     });
 });
 
@@ -173,4 +244,14 @@ document.addEventListener('mousemove', (e) => {
     const x = (e.clientX / window.innerWidth - 0.5) * 20;
     const y = (e.clientY / window.innerHeight - 0.5) * 20;
     title.style.transform = `perspective(1000px) rotateX(${y}deg) rotateY(${x}deg)`;
+});
+
+// Feedback visual nos botões
+const allBtns = document.querySelectorAll('.btn');
+allBtns.forEach(btn => {
+    btn.addEventListener('mousedown', () => btn.classList.add('btn-pressed'));
+    btn.addEventListener('touchstart', () => btn.classList.add('btn-pressed'));
+    btn.addEventListener('mouseup', () => btn.classList.remove('btn-pressed'));
+    btn.addEventListener('mouseleave', () => btn.classList.remove('btn-pressed'));
+    btn.addEventListener('touchend', () => btn.classList.remove('btn-pressed'));
 });
