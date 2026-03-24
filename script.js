@@ -32,6 +32,44 @@ const specialMessages = [
     "Sorria, Ana! O universo sorri com você! 😊"
 ];
 
+// Carrossel de elogios
+const compliments = [
+    "Ana, você é brilhante! ✨",
+    "Seu sorriso ilumina tudo! 😁",
+    "Você é inspiração! 🌈",
+    "Criatividade é seu superpoder! 🦸‍♀️",
+    "Você faz o mundo mais bonito! 🌻",
+    "Ana, você é única! 💎",
+    "Energia positiva sempre! ⚡",
+    "Você merece o universo! 🌌",
+    "Alegria contagiante! 🎉",
+    "Ana, você é pura magia! 🪄"
+];
+let complimentIndex = 0;
+function updateCompliment() {
+    document.getElementById('carousel-compliment').textContent = compliments[complimentIndex];
+}
+function prevCompliment() {
+    complimentIndex = (complimentIndex - 1 + compliments.length) % compliments.length;
+    updateCompliment();
+    animateEmoji('💜');
+}
+function nextCompliment() {
+    complimentIndex = (complimentIndex + 1) % compliments.length;
+    updateCompliment();
+    animateEmoji('🌟');
+}
+
+// Animação de emoji
+function animateEmoji(emoji) {
+    const emojiDiv = document.getElementById('emoji-animation');
+    emojiDiv.textContent = emoji;
+    emojiDiv.classList.remove('pop-anim');
+    void emojiDiv.offsetWidth;
+    emojiDiv.classList.add('pop-anim');
+    setTimeout(() => emojiDiv.textContent = '💖', 800);
+}
+
 // Contadores
 let smilesCount = 0;
 let momentsCount = 0;
@@ -216,6 +254,34 @@ fallStyle.textContent = `
 `;
 document.head.appendChild(fallStyle);
 
+// Modo escuro
+let darkMode = false;
+function toggleDarkMode() {
+    darkMode = !darkMode;
+    document.body.classList.toggle('dark-mode', darkMode);
+    document.querySelectorAll('.card, .minigame-card, .carousel-compliment').forEach(el => {
+        if (darkMode) {
+            el.style.background = 'rgba(30,30,40,0.85)';
+            el.style.color = '#fff';
+        } else {
+            el.style.background = '';
+            el.style.color = '';
+        }
+    });
+}
+
+// Mini-jogo do coração
+let minigameScore = 0;
+function heartClick() {
+    minigameScore++;
+    document.getElementById('minigame-score').textContent = minigameScore;
+    animateEmoji('❤️');
+    const heart = document.getElementById('minigame-heart');
+    heart.style.transform = 'scale(1.35) rotate(-10deg)';
+    setTimeout(() => heart.style.transform = '', 180);
+    if (minigameScore % 10 === 0) showAnimatedAlert('Parabéns! +10 pontos! 🎊');
+}
+
 // Atualizar estatísticas
 function updateStats() {
     document.getElementById('smiles-count').textContent = smilesCount;
@@ -226,6 +292,8 @@ function updateStats() {
 document.addEventListener('DOMContentLoaded', () => {
     createStars();
     loadSounds();
+    updateCompliment();
+    document.getElementById('minigame-score').textContent = minigameScore;
     // Easter egg: tecla secreta
     document.addEventListener('keydown', (e) => {
         if (e.key.toLowerCase() === 'a' && e.ctrlKey && e.shiftKey) {

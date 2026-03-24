@@ -41,6 +41,21 @@
                 <button onclick="closeMessage()" class="btn-close">✕</button>
             </div>
 
+            <div class="entertainment-section">
+                <div class="carousel-container">
+                    <button class="carousel-btn left" onclick="prevCompliment()">◀️</button>
+                    <div class="carousel-compliment" id="carousel-compliment">Ana, você é brilhante! ✨</div>
+                    <button class="carousel-btn right" onclick="nextCompliment()">▶️</button>
+                </div>
+                <div class="emoji-animation" id="emoji-animation">💖</div>
+                <button class="btn btn-darkmode" onclick="toggleDarkMode()">🌓 Modo Escuro</button>
+                <div class="minigame-card">
+                    <h4>Mini-jogo: Toque no Coração!</h4>
+                    <div id="minigame-heart" class="minigame-heart" onclick="heartClick()">❤️</div>
+                    <div>Pontos: <span id="minigame-score">0</span></div>
+                </div>
+            </div>
+
             <div class="card card-stats">
                 <h3>📊 Ana-Verse Stats</h3>
                 <div class="stat-item">
