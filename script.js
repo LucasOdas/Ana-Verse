@@ -288,6 +288,106 @@ function updateStats() {
     document.getElementById('moments-count').textContent = momentsCount;
 }
 
+// --- EFEITOS DE MATERIALIZAÇÃO ---
+document.querySelectorAll('.materializar').forEach((el, i) => {
+    setTimeout(() => {
+        el.style.opacity = '1';
+        el.style.filter = 'blur(0)';
+    }, 200 + i * 180);
+});
+
+// --- RASTRO DE RUNAS ---
+const runes = ['ᚠ','ᚢ','ᚦ','ᚨ','ᚱ','ᚲ','ᚷ','ᚹ','ᚺ','ᛃ','ᛇ','ᛈ','ᛉ','ᛋ','ᛏ','ᛒ','ᛖ','ᛗ','ᛚ','ᛜ','ᛟ','ᛞ'];
+const runeLayer = document.querySelector('.rune-trail-layer');
+function spawnRune(x, y) {
+    const rune = document.createElement('span');
+    rune.className = 'rune';
+    rune.textContent = runes[Math.floor(Math.random()*runes.length)];
+    rune.style.left = x + 'px';
+    rune.style.top = y + 'px';
+    runeLayer.appendChild(rune);
+    setTimeout(() => rune.remove(), 1100);
+}
+document.addEventListener('mousemove', e => {
+    spawnRune(e.clientX, e.clientY);
+});
+// Para mobile: rastro ao tocar
+runeLayer.addEventListener('touchmove', e => {
+    if (e.touches.length > 0) {
+        spawnRune(e.touches[0].clientX, e.touches[0].clientY);
+    }
+});
+
+// --- ORÁCULO DE RUNAS ---
+const oraculoMensagens = [
+    'A luz da Maga Branca dissipa toda sombra.',
+    'Confie na sua intuição, ela é sua magia mais forte.',
+    'O sorriso da Maga Branca é feitiço de alegria.',
+    'A sabedoria está no coração puro.',
+    'A magia mais poderosa é a gentileza.',
+    'Você é a runa mais rara deste grimório.',
+    'O universo conspira a favor da luz.',
+    'A cada novo dia, um novo feitiço de esperança.',
+    'A bondade é a runa que abre todos os portais.',
+    'A Maga Branca transforma tudo em luz!'
+];
+const oraculoRuna = document.getElementById('oraculo-runa');
+const oraculoMsg = document.getElementById('oraculo-mensagem');
+oraculoRuna.addEventListener('click', () => {
+    oraculoRuna.classList.add('brilho');
+    const msg = oraculoMensagens[Math.floor(Math.random()*oraculoMensagens.length)];
+    oraculoMsg.textContent = msg;
+    setTimeout(() => oraculoRuna.classList.remove('brilho'), 1200);
+});
+
+// --- POÇÕES DE HUMOR ---
+const body = document.body;
+const pocoes = document.querySelectorAll('.pocao');
+function mudarPocao(tipo) {
+    pocoes.forEach(p => p.classList.remove('active'));
+    if (tipo === 'calmaria') {
+        body.style.background = 'linear-gradient(135deg, #232323 0%, #7fdfff 100%)';
+        document.querySelector('.pocao-calmaria').classList.add('active');
+    } else if (tipo === 'alegria') {
+        body.style.background = 'linear-gradient(135deg, #232323 0%, #ffe066 100%)';
+        document.querySelector('.pocao-alegria').classList.add('active');
+    } else if (tipo === 'misterio') {
+        body.style.background = 'linear-gradient(135deg, #232323 0%, #bfa76f 100%)';
+        document.querySelector('.pocao-misterio').classList.add('active');
+    }
+    setTimeout(() => body.style.background = '', 9000);
+}
+
+// --- EASTER EGG RÚNICO: L-U-Z ---
+let luzSeq = '';
+document.addEventListener('keydown', e => {
+    const k = e.key.toUpperCase();
+    if ('LUZ'.includes(k)) {
+        luzSeq += k;
+        if (luzSeq.endsWith('LUZ')) {
+            luzSeq = '';
+            // Flash branco e som de sinos
+            const flash = document.createElement('div');
+            flash.style.position = 'fixed';
+            flash.style.left = 0; flash.style.top = 0;
+            flash.style.width = '100vw'; flash.style.height = '100vh';
+            flash.style.background = 'white';
+            flash.style.opacity = '0.95';
+            flash.style.zIndex = '9999';
+            flash.style.transition = 'opacity 0.7s';
+            document.body.appendChild(flash);
+            setTimeout(() => flash.style.opacity = '0', 200);
+            setTimeout(() => flash.remove(), 900);
+            document.getElementById('audio-sino').play();
+            setTimeout(() => {
+                oraculoMsg.textContent = '✨ A Magia Branca é a mais forte! ✨';
+            }, 500);
+        }
+    } else {
+        luzSeq = '';
+    }
+}
+
 // Inicializar ao carregar
 document.addEventListener('DOMContentLoaded', () => {
     createStars();

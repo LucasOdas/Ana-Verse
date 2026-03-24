@@ -3,79 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌟 Ana-Verse - O Universo da Ana 🌟</title>
+    <title>📜 Grimório Digital da Maga Branca</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=IM+Fell+English+SC&family=MedievalSharp&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="stars"></div>
-    
-    <div class="container">
-        <header class="header">
-            <h1 class="title">✨ BEM-VINDA AO ANA-VERSE ✨</h1>
-            <p class="subtitle">Um universo criado especialmente para você!</p>
+    <div class="rune-trail-layer"></div>
+    <div class="container grimorio-container materializar">
+        <header class="header aura-magica">
+            <h1 class="title grimorio-title">✨ Grimório Digital da Maga Branca ✨</h1>
+            <p class="subtitle">Um universo de magia criado pelo Mago Cinzento para a Maga Branca.</p>
         </header>
-
         <div class="main-content">
-            <div class="card card-welcome">
-                <h2>👋 Olá, Ana!</h2>
-                <p>Bem-vinda ao seu próprio universo digital. Clique nos botões abaixo e explore a magia! ✨</p>
+            <div class="card card-welcome aura-magica materializar">
+                <h2>👋 Saudações, Maga Branca!</h2>
+                <p>Este grimório digital foi conjurado especialmente para você. Explore os feitiços e segredos abaixo!</p>
             </div>
-
-            <div class="buttons-grid">
-                <button class="btn btn-message" onclick="showMessage()">
-                    💌 Mensagem Especial
-                </button>
-                <button class="btn btn-surprise" onclick="generateSurprise()">
-                    🎁 Gerador de Surpresa
-                </button>
-                <button class="btn btn-galaxy" onclick="toggleGalaxy()">
-                    🌌 Ativar Galáxia
-                </button>
-                <button class="btn btn-confetti" onclick="launchConfetti()">
-                    🎉 Festa Surpresa!
-                </button>
+            <div class="oraculo-section materializar">
+                <img src="https://cdn.pixabay.com/photo/2017/01/31/13/14/stone-2020272_1280.png" alt="Pedra Rúnica" class="oraculo-runa" id="oraculo-runa">
+                <div class="oraculo-mensagem" id="oraculo-mensagem">Clique na pedra rúnica para canalizar uma mensagem do Oráculo.</div>
             </div>
-
-            <div id="message-box" class="message-box hidden">
-                <p id="message-content"></p>
-                <button onclick="closeMessage()" class="btn-close">✕</button>
-            </div>
-
-            <div class="entertainment-section">
-                <div class="carousel-container">
-                    <button class="carousel-btn left" onclick="prevCompliment()">◀️</button>
-                    <div class="carousel-compliment" id="carousel-compliment">Ana, você é brilhante! ✨</div>
-                    <button class="carousel-btn right" onclick="nextCompliment()">▶️</button>
-                </div>
-                <div class="emoji-animation" id="emoji-animation">💖</div>
-                <button class="btn btn-darkmode" onclick="toggleDarkMode()">🌓 Modo Escuro</button>
-                <div class="minigame-card">
-                    <h4>Mini-jogo: Toque no Coração!</h4>
-                    <div id="minigame-heart" class="minigame-heart" onclick="heartClick()">❤️</div>
-                    <div>Pontos: <span id="minigame-score">0</span></div>
+            <div class="pocoes-section materializar">
+                <h3>Poções de Humor</h3>
+                <div class="pocoes-grid">
+                    <div class="pocao pocao-calmaria" onclick="mudarPocao('calmaria')" title="Poção da Calmaria">🧪</div>
+                    <div class="pocao pocao-alegria" onclick="mudarPocao('alegria')" title="Poção da Alegria">🧴</div>
+                    <div class="pocao pocao-misterio" onclick="mudarPocao('misterio')" title="Poção do Mistério">⚗️</div>
                 </div>
             </div>
-
-            <div class="card card-stats">
-                <h3>📊 Ana-Verse Stats</h3>
+            <div class="card card-stats aura-magica materializar">
+                <h3>📊 Magia do Grimório</h3>
                 <div class="stat-item">
                     <span>Sorrisos Gerados:</span>
                     <span id="smiles-count">0</span>
                 </div>
                 <div class="stat-item">
-                    <span>Momentos Especiais:</span>
+                    <span>Feitiços Lançados:</span>
                     <span id="moments-count">0</span>
                 </div>
             </div>
         </div>
-
-        <footer class="footer">
-            <p>Criado com ❤️ para impressionar a Ana | Ana-Verse v1.0</p>
+        <footer class="footer materializar">
+            <p>Criado pelo Mago Cinzento para a Maga Branca | Grimório Digital ✨</p>
         </footer>
     </div>
-
     <div id="confetti-container"></div>
-
+    <audio id="audio-sino" src="https://cdn.pixabay.com/audio/2022/10/16/audio_12b6b7b6b2.mp3" preload="auto"></audio>
     <script src="script.js"></script>
 </body>
 </html>

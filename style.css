@@ -5,12 +5,12 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'IM Fell English SC', 'Cinzel', 'MedievalSharp', serif;
+    background: linear-gradient(135deg, #232323 0%, #2d2d2d 100%);
     min-height: 100vh;
-    position: relative;
+    color: #f5f5f5;
     overflow-x: hidden;
-    color: #fff;
+    transition: background 0.7s;
 }
 
 /* Efeito de Estrelas de Fundo */
@@ -46,6 +46,20 @@ body {
     z-index: 10;
 }
 
+.grimorio-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 10px 32px 10px;
+    border: 6px solid #bfa76f;
+    border-radius: 32px;
+    background: rgba(30, 30, 30, 0.98);
+    box-shadow: 0 0 60px 10px #bfa76f33, 0 0 0 8px #fff1, 0 0 0 1px #bfa76f;
+    position: relative;
+    z-index: 10;
+    margin-top: 32px;
+    margin-bottom: 32px;
+}
+
 /* Header */
 .header {
     text-align: center;
@@ -54,17 +68,19 @@ body {
 }
 
 .title {
-    font-size: 3.5em;
-    font-weight: bold;
-    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    margin-bottom: 10px;
-    animation: glow 2s ease-in-out infinite;
+    font-family: 'Cinzel', serif;
+    font-size: 2.7em;
+    color: #fffbe7;
+    letter-spacing: 2px;
+    text-shadow: 0 0 18px #fffbe7, 0 0 2px #bfa76f;
+    margin-bottom: 8px;
 }
 
 .subtitle {
-    font-size: 1.3em;
-    opacity: 0.9;
-    animation: fadeInUp 1s ease-out 0.3s both;
+    font-family: 'IM Fell English SC', serif;
+    color: #bfa76f;
+    font-size: 1.2em;
+    margin-bottom: 18px;
 }
 
 @keyframes slideDown {
@@ -100,15 +116,16 @@ body {
 }
 
 /* Cards */
-.card {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 30px;
-    margin-bottom: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
+.card, .card-stats {
+    background: rgba(40, 40, 40, 0.97);
+    border: 2px solid #bfa76f;
+    border-radius: 18px;
+    box-shadow: 0 0 18px 2px #fffbe733, 0 0 0 2px #bfa76f;
+    margin-bottom: 24px;
+    padding: 24px 18px;
+    font-family: 'IM Fell English SC', serif;
+    color: #fffbe7;
+    position: relative;
 }
 
 .card:hover {
@@ -234,10 +251,6 @@ body {
 }
 
 /* Stats */
-.card-stats {
-    background: rgba(255, 255, 255, 0.12);
-}
-
 .stat-item {
     display: flex;
     justify-content: space-between;
@@ -258,11 +271,12 @@ body {
 /* Footer */
 .footer {
     text-align: center;
-    margin-top: 50px;
-    padding-top: 30px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    font-size: 0.9em;
-    opacity: 0.8;
+    margin-top: 40px;
+    padding-top: 18px;
+    border-top: 1px solid #bfa76f44;
+    font-size: 1em;
+    color: #bfa76f;
+    font-family: 'IM Fell English SC', serif;
 }
 
 /* Confetti */
@@ -362,6 +376,124 @@ body {
     transform: scale(1.25) rotate(-10deg);
 }
 
+/* Grimório Digital */
+.aura-magica {
+    box-shadow: 0 0 32px 8px #fffbe7cc, 0 0 0 2px #fffbe7;
+    animation: auraGlow 2.5s infinite alternate;
+}
+
+@keyframes auraGlow {
+    0% { box-shadow: 0 0 32px 8px #fffbe7cc, 0 0 0 2px #fffbe7; }
+    100% { box-shadow: 0 0 48px 16px #fffbe7ee, 0 0 0 4px #fffbe7; }
+}
+
+.materializar {
+    opacity: 0;
+    filter: blur(12px);
+    animation: materializar 1.2s cubic-bezier(.68,-0.55,.27,1.55) forwards;
+}
+
+@keyframes materializar {
+    from { opacity: 0; filter: blur(18px); }
+    60% { opacity: 1; filter: blur(2px); }
+    to { opacity: 1; filter: blur(0); }
+}
+
+.oraculo-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 32px 0 24px 0;
+}
+
+.oraculo-runa {
+    width: 90px;
+    height: 90px;
+    cursor: pointer;
+    filter: drop-shadow(0 0 16px #fffbe7cc);
+    transition: filter 0.4s, transform 0.3s;
+}
+
+.oraculo-runa.brilho {
+    filter: drop-shadow(0 0 32px #fffbe7) brightness(1.3);
+    transform: scale(1.08) rotate(-6deg);
+}
+
+.oraculo-mensagem {
+    margin-top: 18px;
+    font-size: 1.1em;
+    color: #fffbe7;
+    font-family: 'IM Fell English SC', serif;
+    text-align: center;
+    min-height: 32px;
+    transition: color 0.3s;
+}
+
+.pocoes-section {
+    margin: 32px 0 24px 0;
+    text-align: center;
+}
+
+.pocoes-section h3 {
+    color: #fffbe7;
+    font-family: 'Cinzel', serif;
+    margin-bottom: 10px;
+}
+
+.pocoes-grid {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+}
+
+.pocao {
+    font-size: 2.2em;
+    cursor: pointer;
+    transition: transform 0.2s, filter 0.2s;
+    filter: drop-shadow(0 0 8px #fffbe7cc);
+}
+
+.pocao:hover {
+    transform: scale(1.18) rotate(-8deg);
+    filter: drop-shadow(0 0 24px #fffbe7);
+}
+
+.pocao-calmaria.active {
+    filter: drop-shadow(0 0 32px #7fdfff) brightness(1.2);
+}
+
+.pocao-alegria.active {
+    filter: drop-shadow(0 0 32px #ffe066) brightness(1.2);
+}
+
+.pocao-misterio.active {
+    filter: drop-shadow(0 0 32px #bfa76f) brightness(1.2);
+}
+
+.rune-trail-layer {
+    pointer-events: none;
+    position: fixed;
+    left: 0; top: 0; width: 100vw; height: 100vh;
+    z-index: 100;
+}
+
+.rune {
+    position: absolute;
+    font-family: 'MedievalSharp', 'Cinzel', serif;
+    color: #fffbe7;
+    font-size: 1.2em;
+    opacity: 0.85;
+    pointer-events: none;
+    text-shadow: 0 0 8px #fffbe7, 0 0 2px #bfa76f;
+    animation: runeFade 1.1s forwards;
+}
+
+@keyframes runeFade {
+    0% { opacity: 0; transform: scale(0.7) translateY(0); }
+    30% { opacity: 1; transform: scale(1.1) translateY(-8px); }
+    100% { opacity: 0; transform: scale(1.2) translateY(-18px); }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     .title {
@@ -396,6 +528,29 @@ body {
 
     .minigame-heart {
         font-size: 2em;
+    }
+}
+
+@media (max-width: 600px) {
+    .grimorio-container {
+        padding: 8px 2vw;
+        border-radius: 12px;
+    }
+    .grimorio-title {
+        font-size: 1.3em;
+    }
+    .card, .card-stats {
+        padding: 12px 4px;
+        font-size: 0.98em;
+    }
+    .oraculo-runa {
+        width: 60px; height: 60px;
+    }
+    .pocoes-grid {
+        gap: 10px;
+    }
+    .pocao {
+        font-size: 1.3em;
     }
 }
 
