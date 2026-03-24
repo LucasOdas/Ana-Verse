@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 Ana-Verse - O Universo da Ana 🌟</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars"></div>
+    
+    <div class="container">
+        <header class="header">
+            <h1 class="title">✨ BEM-VINDA AO ANA-VERSE ✨</h1>
+            <p class="subtitle">Um universo criado especialmente para você!</p>
+        </header>
+
+        <div class="main-content">
+            <div class="card card-welcome">
+                <h2>👋 Olá, Ana!</h2>
+                <p>Bem-vinda ao seu próprio universo digital. Clique nos botões abaixo e explore a magia! ✨</p>
+            </div>
+
+            <div class="buttons-grid">
+                <button class="btn btn-message" onclick="showMessage()">
+                    💌 Mensagem Especial
+                </button>
+                <button class="btn btn-surprise" onclick="generateSurprise()">
+                    🎁 Gerador de Surpresa
+                </button>
+                <button class="btn btn-galaxy" onclick="toggleGalaxy()">
+                    🌌 Ativar Galáxia
+                </button>
+                <button class="btn btn-confetti" onclick="launchConfetti()">
+                    🎉 Festa Surpresa!
+                </button>
+            </div>
+
+            <div id="message-box" class="message-box hidden">
+                <p id="message-content"></p>
+                <button onclick="closeMessage()" class="btn-close">✕</button>
+            </div>
+
+            <div class="card card-stats">
+                <h3>📊 Ana-Verse Stats</h3>
+                <div class="stat-item">
+                    <span>Sorrisos Gerados:</span>
+                    <span id="smiles-count">0</span>
+                </div>
+                <div class="stat-item">
+                    <span>Momentos Especiais:</span>
+                    <span id="moments-count">0</span>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>Criado com ❤️ para impressionar a Ana | Ana-Verse v1.0</p>
+        </footer>
+    </div>
+
+    <div id="confetti-container"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>

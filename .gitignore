@@ -1,0 +1,18 @@
+# Arquivos de Sistema
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Node (caso use npm depois)
+node_modules/
+npm-debug.log
+
+# Outros
+*.log
