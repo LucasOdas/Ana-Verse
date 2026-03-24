@@ -88,6 +88,36 @@ function createStars() {
     }
 }
 
+// --- MODO ESCURO MANUAL ---
+function toggleDarkMode() {
+    const html = document.documentElement;
+    if (html.hasAttribute('data-theme')) {
+        html.removeAttribute('data-theme');
+        localStorage.removeItem('anaVerseTheme');
+    } else {
+        const current = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'light' : 'dark';
+        html.setAttribute('data-theme', current);
+        localStorage.setItem('anaVerseTheme', current);
+    }
+}
+// Aplica tema salvo manualmente
+(function() {
+    const saved = localStorage.getItem('anaVerseTheme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+})();
+
+// --- MINI-JOGO: TOQUE NO CORAÇÃO ---
+let minigameScore = 0;
+function heartClick() {
+    minigameScore++;
+    document.getElementById('minigame-score').textContent = minigameScore;
+    const heart = document.getElementById('minigame-heart');
+    heart.classList.add('minigame-heart-anim');
+    setTimeout(() => heart.classList.remove('minigame-heart-anim'), 350);
+    smilesCount++;
+    updateStats();
+}
+
 // --- MOBILE TOUCH: click + touchstart para todos os botões ---
 function addTouchAndClick(selector, fn) {
     document.querySelectorAll(selector).forEach(el => {
@@ -114,38 +144,42 @@ function showMessage() {
     modal.querySelector('.modal-bg').onclick = () => modal.remove();
 }
 
-// --- SURPRESA ANIMADA ---
+// --- SURPRESA ANIMADA (corrigido para overlay acima de tudo) ---
 function generateSurprise() {
     const icons = ['✨', '🔮', '🦄', '🌟', '🧚‍♀️', '🪄'];
     const icon = icons[Math.floor(Math.random() * icons.length)];
-    const el = document.createElement('div');
-    el.className = 'surpresa-animada';
-    el.textContent = icon;
-    el.style.left = Math.random() * 80 + 10 + 'vw';
-    el.style.top = Math.random() * 60 + 20 + 'vh';
-    document.body.appendChild(el);
-    setTimeout(() => el.classList.add('show'), 10);
-    setTimeout(() => el.classList.remove('show'), 2500);
-    setTimeout(() => el.remove(), 3000);
+    let overlay = document.getElementById('surprise-overlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'surprise-overlay';
+        overlay.className = 'surprise-overlay';
+        document.body.appendChild(overlay);
+    }
+    overlay.innerHTML = `<div class='surpresa-animada show'>${icon}</div>`;
+    overlay.classList.add('show');
+    setTimeout(() => overlay.classList.remove('show'), 2200);
+    setTimeout(() => overlay.innerHTML = '', 2500);
     momentsCount++;
     updateStats();
 }
 
-// --- GALÁXIA ---
+// --- GALÁXIA: overlay acima de tudo, botão para fechar ---
 let galaxyActive = false;
 function toggleGalaxy() {
     galaxyActive = !galaxyActive;
+    let overlay = document.getElementById('galaxy-front-overlay');
     if (galaxyActive) {
-        document.body.classList.add('galaxy-bg');
-        if (!document.querySelector('.galaxy-overlay')) {
-            const overlay = document.createElement('div');
-            overlay.className = 'galaxy-overlay';
+        if (!overlay) {
+            overlay = document.createElement('div');
+            overlay.id = 'galaxy-front-overlay';
+            overlay.className = 'galaxy-front-overlay';
+            overlay.innerHTML = `<button class='btn btn-close-galaxy' aria-label='Fechar Galáxia' tabindex='0'>✕</button>`;
             document.body.appendChild(overlay);
+            overlay.querySelector('.btn-close-galaxy').onclick = toggleGalaxy;
         }
+        overlay.classList.add('show');
     } else {
-        document.body.classList.remove('galaxy-bg');
-        const overlay = document.querySelector('.galaxy-overlay');
-        if (overlay) overlay.remove();
+        if (overlay) overlay.classList.remove('show');
     }
     momentsCount++;
     updateStats();

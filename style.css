@@ -1,3 +1,4 @@
+[data-theme="dark"],
 :root {
   --color-bg-main: radial-gradient(ellipse at 60% 20%, #444857 0%, #23242a 80%, #0a0a0f 100%);
   --color-glass: rgba(40, 44, 60, 0.82);
@@ -12,9 +13,22 @@
   --color-btn: linear-gradient(135deg, #bfa76f 0%, #e6e6fa 100%);
   --color-btn-active: #fffbe7;
   --color-overlay: rgba(20,20,40,0.55);
-  --min-tap: 48px;
-  --font-title: 'Cinzel', 'IM Fell English SC', serif;
-  --font-body: 'IM Fell English SC', 'MedievalSharp', serif;
+}
+
+[data-theme="light"] {
+  --color-bg-main: radial-gradient(ellipse at 60% 20%, #f5f6fa 0%, #e6e6fa 80%, #c0c0c0 100%);
+  --color-glass: rgba(255,255,255,0.82);
+  --color-glass-blur: blur(14px);
+  --color-border: #bfa76f;
+  --color-border-glow: #ffe066;
+  --color-accent: #23242a;
+  --color-silver: #bfa76f;
+  --color-gold: #bfa76f;
+  --color-white: #23242a;
+  --color-shadow: 0 0 24px 2px #ffe066cc;
+  --color-btn: linear-gradient(135deg, #ffe066 0%, #e6e6fa 100%);
+  --color-btn-active: #fffbe7;
+  --color-overlay: rgba(255,255,255,0.35);
 }
 
 html {
@@ -50,6 +64,63 @@ body {
   background: var(--color-overlay);
   z-index: 2;
   pointer-events: none;
+}
+
+.galaxy-front-overlay {
+  position: fixed;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  background: url('5532919.jpg') center center/cover no-repeat fixed, var(--color-overlay);
+  z-index: 10000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s;
+}
+
+.galaxy-front-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.btn-close-galaxy {
+  margin: 1.5rem 2vw 0 0;
+  background: rgba(0,0,0,0.45);
+  color: #ffe066;
+  font-size: 2rem;
+  border-radius: 50%;
+  border: none;
+  z-index: 10001;
+  min-width: 48px;
+  min-height: 48px;
+  box-shadow: 0 0 0 3px #ffe06655, 0 0 16px 2px #ffe066;
+  cursor: pointer;
+}
+
+.surprise-overlay {
+  position: fixed;
+  left: 0; top: 0; width: 100vw; height: 100vh;
+  z-index: 11000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  background: none;
+}
+
+.surpresa-animada {
+  font-size: 4rem;
+  opacity: 0;
+  transform: scale(0.7) translateY(40px);
+  transition: opacity 0.4s, transform 0.4s;
+  filter: drop-shadow(0 0 24px #fffbe7);
+  pointer-events: none;
+}
+
+.surpresa-animada.show {
+  opacity: 1;
+  transform: scale(1.2) translateY(0);
 }
 
 /* Z-Index para garantir interatividade */
@@ -262,6 +333,16 @@ body {
 .minigame-heart:active {
   transform: scale(1.25) rotate(-10deg);
   filter: drop-shadow(0 0 12px var(--color-gold));
+}
+
+.minigame-heart-anim {
+  animation: heart-pop 0.35s cubic-bezier(.68,-0.55,.27,1.55);
+}
+@keyframes heart-pop {
+  0% { transform: scale(1) rotate(0deg); }
+  40% { transform: scale(1.35) rotate(-10deg); }
+  70% { transform: scale(0.95) rotate(8deg); }
+  100% { transform: scale(1) rotate(0deg); }
 }
 
 /* Pergaminho Revelador */
