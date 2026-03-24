@@ -404,6 +404,11 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelector('.stars').addEventListener('touchstart', () => {
         showAnimatedAlert('✨ Você tocou nas estrelas!');
     });
+    setupGlowRadiante();
+    setupSincroniaAlquimica();
+    setupPergaminhoRevelador();
+    setupPrestigioMagico();
+    setupParallax();
 });
 
 // Efeito de movimento do mouse para interatividade
@@ -422,4 +427,167 @@ allBtns.forEach(btn => {
     btn.addEventListener('mouseup', () => btn.classList.remove('btn-pressed'));
     btn.addEventListener('mouseleave', () => btn.classList.remove('btn-pressed'));
     btn.addEventListener('touchend', () => btn.classList.remove('btn-pressed'));
+});
+
+// --- MISSÃO 1: DEBUG E CORREÇÃO DE EVENTOS ---
+function addTouchAndClick(el, fn) {
+  el.addEventListener('click', fn);
+  el.addEventListener('touchend', fn);
+}
+
+// Corrige event listeners dos cards para Glow Radiante e Poeira Estelar
+function setupGlowRadiante() {
+  document.querySelectorAll('.card, .card-stats').forEach(card => {
+    card.addEventListener('click', () => {
+      card.classList.add('glow-radiante');
+      setTimeout(() => card.classList.remove('glow-radiante'), 2200);
+      poeiraEstelar(card);
+    });
+    card.addEventListener('touchend', () => {
+      card.classList.add('glow-radiante');
+      setTimeout(() => card.classList.remove('glow-radiante'), 2200);
+      poeiraEstelar(card);
+    });
+  });
+}
+function poeiraEstelar(card) {
+  for (let i = 0; i < 7; i++) {
+    const dust = document.createElement('span');
+    dust.className = 'decor-parallax';
+    dust.style.left = (Math.random()*80+10)+'%';
+    dust.style.top = (Math.random()*80+10)+'%';
+    dust.style.width = '8px';
+    dust.style.height = '8px';
+    dust.style.background = 'radial-gradient(circle, #fffbe7 0%, #ffe066 80%, transparent 100%)';
+    dust.style.borderRadius = '50%';
+    dust.style.opacity = '0.7';
+    dust.style.zIndex = 1000;
+    card.appendChild(dust);
+    setTimeout(()=>dust.remove(), 1800+Math.random()*800);
+  }
+}
+
+// --- MISSÃO 2: NOVAS INTERAÇÕES ---
+// Sincronia Alquímica: partícula de luz viajando entre elementos
+function sincroniaAlquimica(fromEl, toEl) {
+  const fromRect = fromEl.getBoundingClientRect();
+  const toRect = toEl.getBoundingClientRect();
+  const particle = document.createElement('div');
+  particle.style.position = 'fixed';
+  particle.style.left = (fromRect.left + fromRect.width/2) + 'px';
+  particle.style.top = (fromRect.top + fromRect.height/2) + 'px';
+  particle.style.width = '14px';
+  particle.style.height = '14px';
+  particle.style.borderRadius = '50%';
+  particle.style.background = 'radial-gradient(circle, #fffbe7 0%, #ffe066 80%, transparent 100%)';
+  particle.style.zIndex = 2000;
+  particle.style.pointerEvents = 'none';
+  document.body.appendChild(particle);
+  particle.animate([
+    { left: (fromRect.left + fromRect.width/2) + 'px', top: (fromRect.top + fromRect.height/2) + 'px', opacity: 1 },
+    { left: (toRect.left + toRect.width/2) + 'px', top: (toRect.top + toRect.height/2) + 'px', opacity: 0.2 }
+  ], { duration: 900, easing: 'cubic-bezier(.68,-0.55,.27,1.55)' });
+  setTimeout(()=>particle.remove(), 950);
+}
+// Exemplo: ao clicar em poção, partícula vai até barra de magia
+function setupSincroniaAlquimica() {
+  const magicBar = document.getElementById('magic-bar');
+  document.querySelectorAll('.pocao').forEach(pocao => {
+    pocao.addEventListener('click', () => sincroniaAlquimica(pocao, magicBar));
+    pocao.addEventListener('touchend', () => sincroniaAlquimica(pocao, magicBar));
+  });
+}
+
+// Pergaminho Revelador
+function setupPergaminhoRevelador() {
+  const pergaminho = document.querySelector('.pergaminho-revelador');
+  if (!pergaminho) return;
+  const nevoa = pergaminho.querySelector('.pergaminho-nevoa');
+  function revelar() {
+    pergaminho.classList.add('revelado');
+  }
+  pergaminho.addEventListener('mouseenter', revelar);
+  pergaminho.addEventListener('touchstart', revelar);
+}
+
+// Sistema de Prestígio Mágico
+let clickPrestigio = 0;
+function setupPrestigioMagico() {
+  document.body.addEventListener('click', () => {
+    clickPrestigio++;
+    if (clickPrestigio === 7) {
+      prestigioDeusa();
+      clickPrestigio = 0;
+    }
+  });
+}
+function prestigioDeusa() {
+  const tela = document.createElement('div');
+  tela.style.position = 'fixed';
+  tela.style.left = 0; tela.style.top = 0;
+  tela.style.width = '100vw'; tela.style.height = '100vh';
+  tela.style.background = 'radial-gradient(circle, #fffbe7 0%, #ffe066 80%, #23242a 100%)';
+  tela.style.zIndex = 99999;
+  tela.style.display = 'flex';
+  tela.style.alignItems = 'center';
+  tela.style.justifyContent = 'center';
+  tela.style.flexDirection = 'column';
+  tela.style.fontFamily = 'Cinzel, serif';
+  tela.style.fontSize = '2.2rem';
+  tela.style.color = '#232323';
+  tela.style.textShadow = '0 0 18px #fffbe7, 0 0 2px #ffe066';
+  tela.innerHTML = '<div>✨ A Magia de Ana atingiu o nível máximo:<br><b>Deusa da Luz</b> ✨</div>';
+  document.body.appendChild(tela);
+  setTimeout(()=>tela.remove(), 3200);
+  // Chuva de confetes prateados
+  for (let i=0; i<60; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.left = Math.random() * 100 + '%';
+    confetti.style.background = 'linear-gradient(135deg, #fffbe7 0%, #c0c0c0 100%)';
+    confetti.style.width = Math.random() * 12 + 6 + 'px';
+    confetti.style.height = confetti.style.width;
+    confetti.style.borderRadius = '50%';
+    confetti.style.animation = `fall ${Math.random() * 2.5 + 2}s ease-in forwards`;
+    confetti.style.opacity = 0.85;
+    confetti.style.zIndex = 99999;
+    document.body.appendChild(confetti);
+    setTimeout(() => confetti.remove(), (Math.random() * 2.5 + 2) * 1000);
+  }
+}
+
+// Parallax decorativo
+function setupParallax() {
+  document.querySelectorAll('.decor-parallax').forEach(el => {
+    window.addEventListener('scroll', () => {
+      const y = window.scrollY;
+      el.style.transform = `translateY(${y*0.12}px)`;
+    });
+  });
+}
+
+// Atualiza barra de magia conforme interações
+let magicLevel = 0;
+function updateMagicBar(increment=1) {
+  magicLevel = Math.min(100, magicLevel+increment);
+  document.getElementById('magic-bar').style.width = magicLevel+'%';
+  document.getElementById('magic-level').textContent = magicLevel+'%';
+  if (magicLevel === 100) {
+    prestigioDeusa();
+    magicLevel = 0;
+    setTimeout(()=>{
+      document.getElementById('magic-bar').style.width = '0%';
+      document.getElementById('magic-level').textContent = '0%';
+    }, 2000);
+  }
+}
+// Incrementa barra em interações principais
+['showMessage','generateSurprise','toggleGalaxy','launchConfetti','heartClick','mudarPocao'].forEach(fnName => {
+  const oldFn = window[fnName];
+  if (typeof oldFn === 'function') {
+    window[fnName] = function(...args) {
+      updateMagicBar(12);
+      return oldFn.apply(this, args);
+    };
+  }
 });
