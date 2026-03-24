@@ -88,199 +88,101 @@ function createStars() {
     }
 }
 
-// Mostrar mensagem especial com animação
+// --- MOBILE TOUCH: click + touchstart para todos os botões ---
+function addTouchAndClick(selector, fn) {
+    document.querySelectorAll(selector).forEach(el => {
+        el.addEventListener('click', fn);
+        el.addEventListener('touchstart', fn, { passive: true });
+    });
+}
+
+// --- MODAL MÁGICO ---
 function showMessage() {
-    playClick();
-    const messageBox = document.getElementById('message-box');
-    const messageContent = document.getElementById('message-content');
-    const randomMessage = specialMessages[Math.floor(Math.random() * specialMessages.length)];
-    messageContent.textContent = randomMessage;
-    messageBox.classList.remove('hidden');
-    messageBox.classList.add('pop-anim');
-    setTimeout(() => messageBox.classList.remove('pop-anim'), 600);
-    smilesCount++;
-    updateStats();
+    const modal = document.createElement('div');
+    modal.className = 'modal-magico';
+    modal.innerHTML = `
+    <div class="modal-bg"></div>
+    <div class="modal-content">
+      <h2>Mensagem do Mago Cinzento</h2>
+      <p>"Ana, Maga Branca, tua luz é o feitiço mais raro do universo. Que este Grimório te inspire a criar magia por onde passar!"</p>
+      <button class="btn btn-close-modal" aria-label="Fechar">Fechar</button>
+    </div>
+  `;
+    document.body.appendChild(modal);
+    setTimeout(() => modal.classList.add('show'), 10);
+    modal.querySelector('.btn-close-modal').onclick = () => modal.remove();
+    modal.querySelector('.modal-bg').onclick = () => modal.remove();
 }
 
-// Fechar mensagem
-function closeMessage() {
-    playClick();
-    document.getElementById('message-box').classList.add('hidden');
-}
-
-// Gerar surpresa aleatória com efeito
+// --- SURPRESA ANIMADA ---
 function generateSurprise() {
-    playClick();
-    const surprises = [
-        "🎬 PLOT TWIST: Ana é a protagonista deste universo!",
-        "🎯 MISSÃO: Relaxar, aproveitar e se divertir!",
-        "⭐ CONQUISTA DESBLOQUEADA: Acessar o Ana-Verse!",
-        "🎪 EVENTO ESPECIAL: Você acaba de encontrar um código secreto!",
-        "💎 TESOURO: Sua presença aqui já é especial!",
-        "🔮 REVELAÇÃO: Este projeto foi feito para você!",
-        "🎯 EASTER EGG: Parabéns por explorar o site!",
-        "🌈 PODER ATIVADO: Alegria infinita desbloqueada!",
-        "🦄 Magia desbloqueada! Toque nas estrelas!"
-    ];
-    const surprise = surprises[Math.floor(Math.random() * surprises.length)];
-    showAnimatedAlert(surprise);
+    const icons = ['✨', '🔮', '🦄', '🌟', '🧚‍♀️', '🪄'];
+    const icon = icons[Math.floor(Math.random() * icons.length)];
+    const el = document.createElement('div');
+    el.className = 'surpresa-animada';
+    el.textContent = icon;
+    el.style.left = Math.random() * 80 + 10 + 'vw';
+    el.style.top = Math.random() * 60 + 20 + 'vh';
+    document.body.appendChild(el);
+    setTimeout(() => el.classList.add('show'), 10);
+    setTimeout(() => el.classList.remove('show'), 2500);
+    setTimeout(() => el.remove(), 3000);
     momentsCount++;
     updateStats();
 }
 
-// Alerta animado para surpresas
-function showAnimatedAlert(text) {
-    let alertDiv = document.createElement('div');
-    alertDiv.className = 'animated-alert';
-    alertDiv.textContent = text;
-    document.body.appendChild(alertDiv);
-    setTimeout(() => {
-        alertDiv.classList.add('show');
-        setTimeout(() => {
-            alertDiv.classList.remove('show');
-            setTimeout(() => alertDiv.remove(), 500);
-        }, 2200);
-    }, 50);
-}
-
-// Ativar/desativar galáxia (efeito visual)
+// --- GALÁXIA ---
 let galaxyActive = false;
 function toggleGalaxy() {
-    playClick();
     galaxyActive = !galaxyActive;
-    const body = document.body;
     if (galaxyActive) {
-        body.style.background = 'radial-gradient(circle, #1a0033 0%, #330066 50%, #000000 100%)';
-        createFloatingShapes();
-        showAnimatedAlert('🌌 Galáxia ativada!');
+        document.body.classList.add('galaxy-bg');
+        if (!document.querySelector('.galaxy-overlay')) {
+            const overlay = document.createElement('div');
+            overlay.className = 'galaxy-overlay';
+            document.body.appendChild(overlay);
+        }
     } else {
-        body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-        removeFloatingShapes();
-        showAnimatedAlert('Galáxia desativada!');
+        document.body.classList.remove('galaxy-bg');
+        const overlay = document.querySelector('.galaxy-overlay');
+        if (overlay) overlay.remove();
     }
     momentsCount++;
     updateStats();
 }
 
-// Criar formas flutuantes
-function createFloatingShapes() {
-    removeFloatingShapes();
-    for (let i = 0; i < 5; i++) {
-        const shape = document.createElement('div');
-        shape.className = 'floating-shape';
-        shape.style.position = 'fixed';
-        shape.style.width = Math.random() * 100 + 50 + 'px';
-        shape.style.height = shape.style.width;
-        shape.style.borderRadius = '50%';
-        shape.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-        shape.style.left = Math.random() * 100 + '%';
-        shape.style.top = Math.random() * 100 + '%';
-        shape.style.opacity = '0.13';
-        shape.style.pointerEvents = 'none';
-        shape.style.animation = `float ${Math.random() * 10 + 15}s infinite`;
-        shape.style.zIndex = '1';
-        shape.classList.add('galaxy-shape');
-        document.body.appendChild(shape);
-    }
-}
-function removeFloatingShapes() {
-    document.querySelectorAll('.galaxy-shape').forEach(e => e.remove());
-}
-
-// Animação de flutuação
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes float {
-        0%, 100% { transform: translate(0, 0) rotate(0deg); }
-        33% { transform: translate(100px, -100px) rotate(120deg); }
-        66% { transform: translate(-100px, 100px) rotate(240deg); }
-    }
-    .animated-alert {
-        position: fixed;
-        left: 50%;
-        top: 20%;
-        transform: translate(-50%, -50%) scale(0.8);
-        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        color: #fff;
-        padding: 22px 30px;
-        border-radius: 18px;
-        font-size: 1.2em;
-        font-weight: bold;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-        opacity: 0;
-        z-index: 9999;
-        transition: all 0.5s cubic-bezier(.68,-0.55,.27,1.55);
-        pointer-events: none;
-    }
-    .animated-alert.show {
-        opacity: 1;
-        transform: translate(-50%, -50%) scale(1);
-    }
-`;
-document.head.appendChild(style);
-
-// Lançar confete (festa) com efeito aprimorado
+// --- CONFETTI ---
 function launchConfetti() {
     playConfetti();
-    const container = document.getElementById('confetti-container');
-    const colors = ['#FFD700', '#FF69B4', '#00CED1', '#FFB6C1', '#FFA500', '#00FF00'];
     for (let i = 0; i < 60; i++) {
         const confetti = document.createElement('div');
         confetti.className = 'confetti';
-        confetti.style.left = Math.random() * 100 + '%';
-        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.background = 'linear-gradient(135deg, #fffbe7 0%, #c0c0c0 100%)';
         confetti.style.width = Math.random() * 12 + 6 + 'px';
         confetti.style.height = confetti.style.width;
         confetti.style.borderRadius = '50%';
-        confetti.style.animation = `fall ${Math.random() * 2.5 + 2}s ease-in forwards`;
+        confetti.style.top = '-40px';
+        confetti.style.position = 'fixed';
+        confetti.style.zIndex = 9999;
         confetti.style.opacity = 0.85;
-        container.appendChild(confetti);
-        setTimeout(() => confetti.remove(), (Math.random() * 2.5 + 2) * 1000);
+        confetti.style.animation = `fall ${Math.random() * 2.5 + 2}s ease-in forwards`;
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 5000);
     }
     showAnimatedAlert('🎉 Festa Surpresa!');
     momentsCount++;
     updateStats();
 }
 
-// Adicionar animação de queda
-const fallStyle = document.createElement('style');
-fallStyle.textContent = `
-    @keyframes fall {
-        to {
-            transform: translateY(100vh) rotate(360deg);
-            opacity: 0;
-        }
-    }
-`;
-document.head.appendChild(fallStyle);
-
-// Modo escuro
-let darkMode = false;
-function toggleDarkMode() {
-    darkMode = !darkMode;
-    document.body.classList.toggle('dark-mode', darkMode);
-    document.querySelectorAll('.card, .minigame-card, .carousel-compliment').forEach(el => {
-        if (darkMode) {
-            el.style.background = 'rgba(30,30,40,0.85)';
-            el.style.color = '#fff';
-        } else {
-            el.style.background = '';
-            el.style.color = '';
-        }
-    });
-}
-
-// Mini-jogo do coração
-let minigameScore = 0;
-function heartClick() {
-    minigameScore++;
-    document.getElementById('minigame-score').textContent = minigameScore;
-    animateEmoji('❤️');
-    const heart = document.getElementById('minigame-heart');
-    heart.style.transform = 'scale(1.35) rotate(-10deg)';
-    setTimeout(() => heart.style.transform = '', 180);
-    if (minigameScore % 10 === 0) showAnimatedAlert('Parabéns! +10 pontos! 🎊');
-}
+// --- FEEDBACK VISUAL INSTANTÂNEO ---
+document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('touchstart', () => btn.classList.add('btn-pressed'));
+    btn.addEventListener('touchend', () => btn.classList.remove('btn-pressed'));
+    btn.addEventListener('mousedown', () => btn.classList.add('btn-pressed'));
+    btn.addEventListener('mouseup', () => btn.classList.remove('btn-pressed'));
+    btn.addEventListener('mouseleave', () => btn.classList.remove('btn-pressed'));
+});
 
 // Atualizar estatísticas
 function updateStats() {
@@ -288,112 +190,16 @@ function updateStats() {
     document.getElementById('moments-count').textContent = momentsCount;
 }
 
-// --- EFEITOS DE MATERIALIZAÇÃO ---
-document.querySelectorAll('.materializar').forEach((el, i) => {
-    setTimeout(() => {
-        el.style.opacity = '1';
-        el.style.filter = 'blur(0)';
-    }, 200 + i * 180);
-});
-
-// --- RASTRO DE RUNAS ---
-const runes = ['ᚠ','ᚢ','ᚦ','ᚨ','ᚱ','ᚲ','ᚷ','ᚹ','ᚺ','ᛃ','ᛇ','ᛈ','ᛉ','ᛋ','ᛏ','ᛒ','ᛖ','ᛗ','ᛚ','ᛜ','ᛟ','ᛞ'];
-const runeLayer = document.querySelector('.rune-trail-layer');
-function spawnRune(x, y) {
-    const rune = document.createElement('span');
-    rune.className = 'rune';
-    rune.textContent = runes[Math.floor(Math.random()*runes.length)];
-    rune.style.left = x + 'px';
-    rune.style.top = y + 'px';
-    runeLayer.appendChild(rune);
-    setTimeout(() => rune.remove(), 1100);
-}
-document.addEventListener('mousemove', e => {
-    spawnRune(e.clientX, e.clientY);
-});
-// Para mobile: rastro ao tocar
-runeLayer.addEventListener('touchmove', e => {
-    if (e.touches.length > 0) {
-        spawnRune(e.touches[0].clientX, e.touches[0].clientY);
-    }
-});
-
-// --- ORÁCULO DE RUNAS ---
-const oraculoMensagens = [
-    'A luz da Maga Branca dissipa toda sombra.',
-    'Confie na sua intuição, ela é sua magia mais forte.',
-    'O sorriso da Maga Branca é feitiço de alegria.',
-    'A sabedoria está no coração puro.',
-    'A magia mais poderosa é a gentileza.',
-    'Você é a runa mais rara deste grimório.',
-    'O universo conspira a favor da luz.',
-    'A cada novo dia, um novo feitiço de esperança.',
-    'A bondade é a runa que abre todos os portais.',
-    'A Maga Branca transforma tudo em luz!'
-];
-const oraculoRuna = document.getElementById('oraculo-runa');
-const oraculoMsg = document.getElementById('oraculo-mensagem');
-oraculoRuna.addEventListener('click', () => {
-    oraculoRuna.classList.add('brilho');
-    const msg = oraculoMensagens[Math.floor(Math.random()*oraculoMensagens.length)];
-    oraculoMsg.textContent = msg;
-    setTimeout(() => oraculoRuna.classList.remove('brilho'), 1200);
-});
-
-// --- POÇÕES DE HUMOR ---
-const body = document.body;
-const pocoes = document.querySelectorAll('.pocao');
-function mudarPocao(tipo) {
-    pocoes.forEach(p => p.classList.remove('active'));
-    if (tipo === 'calmaria') {
-        body.style.background = 'linear-gradient(135deg, #232323 0%, #7fdfff 100%)';
-        document.querySelector('.pocao-calmaria').classList.add('active');
-    } else if (tipo === 'alegria') {
-        body.style.background = 'linear-gradient(135deg, #232323 0%, #ffe066 100%)';
-        document.querySelector('.pocao-alegria').classList.add('active');
-    } else if (tipo === 'misterio') {
-        body.style.background = 'linear-gradient(135deg, #232323 0%, #bfa76f 100%)';
-        document.querySelector('.pocao-misterio').classList.add('active');
-    }
-    setTimeout(() => body.style.background = '', 9000);
-}
-
-// --- EASTER EGG RÚNICO: L-U-Z ---
-let luzSeq = '';
-document.addEventListener('keydown', e => {
-    const k = e.key.toUpperCase();
-    if ('LUZ'.includes(k)) {
-        luzSeq += k;
-        if (luzSeq.endsWith('LUZ')) {
-            luzSeq = '';
-            // Flash branco e som de sinos
-            const flash = document.createElement('div');
-            flash.style.position = 'fixed';
-            flash.style.left = 0; flash.style.top = 0;
-            flash.style.width = '100vw'; flash.style.height = '100vh';
-            flash.style.background = 'white';
-            flash.style.opacity = '0.95';
-            flash.style.zIndex = '9999';
-            flash.style.transition = 'opacity 0.7s';
-            document.body.appendChild(flash);
-            setTimeout(() => flash.style.opacity = '0', 200);
-            setTimeout(() => flash.remove(), 900);
-            document.getElementById('audio-sino').play();
-            setTimeout(() => {
-                oraculoMsg.textContent = '✨ A Magia Branca é a mais forte! ✨';
-            }, 500);
-        }
-    } else {
-        luzSeq = '';
-    }
-}
-
-// Inicializar ao carregar
+// --- INICIALIZAÇÃO DOS BOTÕES ---
 document.addEventListener('DOMContentLoaded', () => {
     createStars();
     loadSounds();
     updateCompliment();
     document.getElementById('minigame-score').textContent = minigameScore;
+    addTouchAndClick('.btn-message', showMessage);
+    addTouchAndClick('.btn-surprise', generateSurprise);
+    addTouchAndClick('.btn-galaxy', toggleGalaxy);
+    addTouchAndClick('.btn-confetti', launchConfetti);
     // Easter egg: tecla secreta
     document.addEventListener('keydown', (e) => {
         if (e.key.toLowerCase() === 'a' && e.ctrlKey && e.shiftKey) {
@@ -431,163 +237,163 @@ allBtns.forEach(btn => {
 
 // --- MISSÃO 1: DEBUG E CORREÇÃO DE EVENTOS ---
 function addTouchAndClick(el, fn) {
-  el.addEventListener('click', fn);
-  el.addEventListener('touchend', fn);
+    el.addEventListener('click', fn);
+    el.addEventListener('touchend', fn);
 }
 
 // Corrige event listeners dos cards para Glow Radiante e Poeira Estelar
 function setupGlowRadiante() {
-  document.querySelectorAll('.card, .card-stats').forEach(card => {
-    card.addEventListener('click', () => {
-      card.classList.add('glow-radiante');
-      setTimeout(() => card.classList.remove('glow-radiante'), 2200);
-      poeiraEstelar(card);
+    document.querySelectorAll('.card, .card-stats').forEach(card => {
+        card.addEventListener('click', () => {
+            card.classList.add('glow-radiante');
+            setTimeout(() => card.classList.remove('glow-radiante'), 2200);
+            poeiraEstelar(card);
+        });
+        card.addEventListener('touchend', () => {
+            card.classList.add('glow-radiante');
+            setTimeout(() => card.classList.remove('glow-radiante'), 2200);
+            poeiraEstelar(card);
+        });
     });
-    card.addEventListener('touchend', () => {
-      card.classList.add('glow-radiante');
-      setTimeout(() => card.classList.remove('glow-radiante'), 2200);
-      poeiraEstelar(card);
-    });
-  });
 }
 function poeiraEstelar(card) {
-  for (let i = 0; i < 7; i++) {
-    const dust = document.createElement('span');
-    dust.className = 'decor-parallax';
-    dust.style.left = (Math.random()*80+10)+'%';
-    dust.style.top = (Math.random()*80+10)+'%';
-    dust.style.width = '8px';
-    dust.style.height = '8px';
-    dust.style.background = 'radial-gradient(circle, #fffbe7 0%, #ffe066 80%, transparent 100%)';
-    dust.style.borderRadius = '50%';
-    dust.style.opacity = '0.7';
-    dust.style.zIndex = 1000;
-    card.appendChild(dust);
-    setTimeout(()=>dust.remove(), 1800+Math.random()*800);
-  }
+    for (let i = 0; i < 7; i++) {
+        const dust = document.createElement('span');
+        dust.className = 'decor-parallax';
+        dust.style.left = (Math.random() * 80 + 10) + '%';
+        dust.style.top = (Math.random() * 80 + 10) + '%';
+        dust.style.width = '8px';
+        dust.style.height = '8px';
+        dust.style.background = 'radial-gradient(circle, #fffbe7 0%, #ffe066 80%, transparent 100%)';
+        dust.style.borderRadius = '50%';
+        dust.style.opacity = '0.7';
+        dust.style.zIndex = 1000;
+        card.appendChild(dust);
+        setTimeout(() => dust.remove(), 1800 + Math.random() * 800);
+    }
 }
 
 // --- MISSÃO 2: NOVAS INTERAÇÕES ---
 // Sincronia Alquímica: partícula de luz viajando entre elementos
 function sincroniaAlquimica(fromEl, toEl) {
-  const fromRect = fromEl.getBoundingClientRect();
-  const toRect = toEl.getBoundingClientRect();
-  const particle = document.createElement('div');
-  particle.style.position = 'fixed';
-  particle.style.left = (fromRect.left + fromRect.width/2) + 'px';
-  particle.style.top = (fromRect.top + fromRect.height/2) + 'px';
-  particle.style.width = '14px';
-  particle.style.height = '14px';
-  particle.style.borderRadius = '50%';
-  particle.style.background = 'radial-gradient(circle, #fffbe7 0%, #ffe066 80%, transparent 100%)';
-  particle.style.zIndex = 2000;
-  particle.style.pointerEvents = 'none';
-  document.body.appendChild(particle);
-  particle.animate([
-    { left: (fromRect.left + fromRect.width/2) + 'px', top: (fromRect.top + fromRect.height/2) + 'px', opacity: 1 },
-    { left: (toRect.left + toRect.width/2) + 'px', top: (toRect.top + toRect.height/2) + 'px', opacity: 0.2 }
-  ], { duration: 900, easing: 'cubic-bezier(.68,-0.55,.27,1.55)' });
-  setTimeout(()=>particle.remove(), 950);
+    const fromRect = fromEl.getBoundingClientRect();
+    const toRect = toEl.getBoundingClientRect();
+    const particle = document.createElement('div');
+    particle.style.position = 'fixed';
+    particle.style.left = (fromRect.left + fromRect.width / 2) + 'px';
+    particle.style.top = (fromRect.top + fromRect.height / 2) + 'px';
+    particle.style.width = '14px';
+    particle.style.height = '14px';
+    particle.style.borderRadius = '50%';
+    particle.style.background = 'radial-gradient(circle, #fffbe7 0%, #ffe066 80%, transparent 100%)';
+    particle.style.zIndex = 2000;
+    particle.style.pointerEvents = 'none';
+    document.body.appendChild(particle);
+    particle.animate([
+        { left: (fromRect.left + fromRect.width / 2) + 'px', top: (fromRect.top + fromRect.height / 2) + 'px', opacity: 1 },
+        { left: (toRect.left + toRect.width / 2) + 'px', top: (toRect.top + toRect.height / 2) + 'px', opacity: 0.2 }
+    ], { duration: 900, easing: 'cubic-bezier(.68,-0.55,.27,1.55)' });
+    setTimeout(() => particle.remove(), 950);
 }
 // Exemplo: ao clicar em poção, partícula vai até barra de magia
 function setupSincroniaAlquimica() {
-  const magicBar = document.getElementById('magic-bar');
-  document.querySelectorAll('.pocao').forEach(pocao => {
-    pocao.addEventListener('click', () => sincroniaAlquimica(pocao, magicBar));
-    pocao.addEventListener('touchend', () => sincroniaAlquimica(pocao, magicBar));
-  });
+    const magicBar = document.getElementById('magic-bar');
+    document.querySelectorAll('.pocao').forEach(pocao => {
+        pocao.addEventListener('click', () => sincroniaAlquimica(pocao, magicBar));
+        pocao.addEventListener('touchend', () => sincroniaAlquimica(pocao, magicBar));
+    });
 }
 
 // Pergaminho Revelador
 function setupPergaminhoRevelador() {
-  const pergaminho = document.querySelector('.pergaminho-revelador');
-  if (!pergaminho) return;
-  const nevoa = pergaminho.querySelector('.pergaminho-nevoa');
-  function revelar() {
-    pergaminho.classList.add('revelado');
-  }
-  pergaminho.addEventListener('mouseenter', revelar);
-  pergaminho.addEventListener('touchstart', revelar);
+    const pergaminho = document.querySelector('.pergaminho-revelador');
+    if (!pergaminho) return;
+    const nevoa = pergaminho.querySelector('.pergaminho-nevoa');
+    function revelar() {
+        pergaminho.classList.add('revelado');
+    }
+    pergaminho.addEventListener('mouseenter', revelar);
+    pergaminho.addEventListener('touchstart', revelar);
 }
 
 // Sistema de Prestígio Mágico
 let clickPrestigio = 0;
 function setupPrestigioMagico() {
-  document.body.addEventListener('click', () => {
-    clickPrestigio++;
-    if (clickPrestigio === 7) {
-      prestigioDeusa();
-      clickPrestigio = 0;
-    }
-  });
+    document.body.addEventListener('click', () => {
+        clickPrestigio++;
+        if (clickPrestigio === 7) {
+            prestigioDeusa();
+            clickPrestigio = 0;
+        }
+    });
 }
 function prestigioDeusa() {
-  const tela = document.createElement('div');
-  tela.style.position = 'fixed';
-  tela.style.left = 0; tela.style.top = 0;
-  tela.style.width = '100vw'; tela.style.height = '100vh';
-  tela.style.background = 'radial-gradient(circle, #fffbe7 0%, #ffe066 80%, #23242a 100%)';
-  tela.style.zIndex = 99999;
-  tela.style.display = 'flex';
-  tela.style.alignItems = 'center';
-  tela.style.justifyContent = 'center';
-  tela.style.flexDirection = 'column';
-  tela.style.fontFamily = 'Cinzel, serif';
-  tela.style.fontSize = '2.2rem';
-  tela.style.color = '#232323';
-  tela.style.textShadow = '0 0 18px #fffbe7, 0 0 2px #ffe066';
-  tela.innerHTML = '<div>✨ A Magia de Ana atingiu o nível máximo:<br><b>Deusa da Luz</b> ✨</div>';
-  document.body.appendChild(tela);
-  setTimeout(()=>tela.remove(), 3200);
-  // Chuva de confetes prateados
-  for (let i=0; i<60; i++) {
-    const confetti = document.createElement('div');
-    confetti.className = 'confetti';
-    confetti.style.left = Math.random() * 100 + '%';
-    confetti.style.background = 'linear-gradient(135deg, #fffbe7 0%, #c0c0c0 100%)';
-    confetti.style.width = Math.random() * 12 + 6 + 'px';
-    confetti.style.height = confetti.style.width;
-    confetti.style.borderRadius = '50%';
-    confetti.style.animation = `fall ${Math.random() * 2.5 + 2}s ease-in forwards`;
-    confetti.style.opacity = 0.85;
-    confetti.style.zIndex = 99999;
-    document.body.appendChild(confetti);
-    setTimeout(() => confetti.remove(), (Math.random() * 2.5 + 2) * 1000);
-  }
+    const tela = document.createElement('div');
+    tela.style.position = 'fixed';
+    tela.style.left = 0; tela.style.top = 0;
+    tela.style.width = '100vw'; tela.style.height = '100vh';
+    tela.style.background = 'radial-gradient(circle, #fffbe7 0%, #ffe066 80%, #23242a 100%)';
+    tela.style.zIndex = 99999;
+    tela.style.display = 'flex';
+    tela.style.alignItems = 'center';
+    tela.style.justifyContent = 'center';
+    tela.style.flexDirection = 'column';
+    tela.style.fontFamily = 'Cinzel, serif';
+    tela.style.fontSize = '2.2rem';
+    tela.style.color = '#232323';
+    tela.style.textShadow = '0 0 18px #fffbe7, 0 0 2px #ffe066';
+    tela.innerHTML = '<div>✨ A Magia de Ana atingiu o nível máximo:<br><b>Deusa da Luz</b> ✨</div>';
+    document.body.appendChild(tela);
+    setTimeout(() => tela.remove(), 3200);
+    // Chuva de confetes prateados
+    for (let i = 0; i < 60; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.background = 'linear-gradient(135deg, #fffbe7 0%, #c0c0c0 100%)';
+        confetti.style.width = Math.random() * 12 + 6 + 'px';
+        confetti.style.height = confetti.style.width;
+        confetti.style.borderRadius = '50%';
+        confetti.style.animation = `fall ${Math.random() * 2.5 + 2}s ease-in forwards`;
+        confetti.style.opacity = 0.85;
+        confetti.style.zIndex = 99999;
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), (Math.random() * 2.5 + 2) * 1000);
+    }
 }
 
 // Parallax decorativo
 function setupParallax() {
-  document.querySelectorAll('.decor-parallax').forEach(el => {
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      el.style.transform = `translateY(${y*0.12}px)`;
+    document.querySelectorAll('.decor-parallax').forEach(el => {
+        window.addEventListener('scroll', () => {
+            const y = window.scrollY;
+            el.style.transform = `translateY(${y * 0.12}px)`;
+        });
     });
-  });
 }
 
 // Atualiza barra de magia conforme interações
 let magicLevel = 0;
-function updateMagicBar(increment=1) {
-  magicLevel = Math.min(100, magicLevel+increment);
-  document.getElementById('magic-bar').style.width = magicLevel+'%';
-  document.getElementById('magic-level').textContent = magicLevel+'%';
-  if (magicLevel === 100) {
-    prestigioDeusa();
-    magicLevel = 0;
-    setTimeout(()=>{
-      document.getElementById('magic-bar').style.width = '0%';
-      document.getElementById('magic-level').textContent = '0%';
-    }, 2000);
-  }
+function updateMagicBar(increment = 1) {
+    magicLevel = Math.min(100, magicLevel + increment);
+    document.getElementById('magic-bar').style.width = magicLevel + '%';
+    document.getElementById('magic-level').textContent = magicLevel + '%';
+    if (magicLevel === 100) {
+        prestigioDeusa();
+        magicLevel = 0;
+        setTimeout(() => {
+            document.getElementById('magic-bar').style.width = '0%';
+            document.getElementById('magic-level').textContent = '0%';
+        }, 2000);
+    }
 }
 // Incrementa barra em interações principais
-['showMessage','generateSurprise','toggleGalaxy','launchConfetti','heartClick','mudarPocao'].forEach(fnName => {
-  const oldFn = window[fnName];
-  if (typeof oldFn === 'function') {
-    window[fnName] = function(...args) {
-      updateMagicBar(12);
-      return oldFn.apply(this, args);
-    };
-  }
+['showMessage', 'generateSurprise', 'toggleGalaxy', 'launchConfetti', 'heartClick', 'mudarPocao'].forEach(fnName => {
+    const oldFn = window[fnName];
+    if (typeof oldFn === 'function') {
+        window[fnName] = function (...args) {
+            updateMagicBar(12);
+            return oldFn.apply(this, args);
+        };
+    }
 });
